@@ -5,6 +5,7 @@ import time
 from settings import Settings
 from user import User
 from obstacle import Obstacle
+from life import Life
 from button import Button
 
 class TechFighters:
@@ -18,7 +19,11 @@ class TechFighters:
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         self.user = User(self)
         self.obstacles = pygame.sprite.Group()
+
         self.distance = 0
+
+        self.lives = pygame.sprite.Group()
+
         pygame.display.set_caption("Tech Fighters")
         # Game states
         self.game_active = False  # Track whether the game is running
@@ -28,18 +33,26 @@ class TechFighters:
         """Start the main loop for the game."""
         while True:
             self._check_events()
-            
+            self.obstacles.update()
+            self.lives.update()
+
             if self.game_active:
                 self.obstacles.update()
                 self.user.update()
                 self._load_obstacle()
                 self._delete_obstacle()
+                self._load_life()
+                self._delete_life()
                 self._collision()
                 self._score()
-                self.end_game()       
-            
+                self.end_game()
+
             self._update_screen()
             self.clock.tick(60)
+            if pygame.sprite.spritecollide(self.user, self.obstacles, True):
+                self.user.collision(50)
+            if pygame.sprite.spritecollide(self.user, self.lives, True):
+                self.user.collision(-50)
 
     
     def _check_events(self):
@@ -67,9 +80,12 @@ class TechFighters:
 
     def _update_screen(self):
         self.screen.fill(self.settings.bg_colour)
+
         if self.game_active:
             for obstacle in self.obstacles.sprites():
                 obstacle.draw_obstacle()
+            for life in self.lives.sprites():
+                life.draw_life()
             self.user.blitme()
             self._score()
             
@@ -86,10 +102,21 @@ class TechFighters:
         for obstacle in self.obstacles.copy():
             if obstacle.rect.bottom <= 0:
                 self.obstacles.remove(obstacle)
+
+#Lives
+    def _load_life(self):
+        if random.randint(0,200) == 3:
+            new_life = Life(self)
+            self.lives.add(new_life)
+
+    def _delete_life(self):
+        for life in self.lives.copy():
+            if life.rect.bottom <= 0:
+                self.lives.remove(life)
     
     def _collision(self):
         if pygame.sprite.spritecollide(self.user, self.obstacles, True):
-                self.user.collision()
+                self.user.collision(50)
     
     def _score(self):
         self.distance += self.settings.speed
@@ -108,7 +135,8 @@ class TechFighters:
             self.screen.blit(game_over_text, game_over_rect)  # Draw text at the center of the screen
             self.screen.blit(score_text, score_rect)  # Draw text at the center of the screen
             pygame.display.flip()
-            pygame.time.delay(3000)  # Pause for 2 seconds before exiting
+            pygame.time.delay(3000)  # Pause for 3 seconds before exiting
+
             self.game_active = False
     
 if __name__ == '__main__':
