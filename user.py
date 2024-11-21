@@ -8,7 +8,7 @@ class User:
         self.screen_rect = game.screen.get_rect()
         self.settings = game.settings
         
-        self.image = pygame.image.load('assets/john.jpg')
+        self.image = pygame.image.load('assets/john_2.png')
         self.image_flipped = pygame.transform.flip(self.image, True, False)
         
         self.rect = self.image.get_rect()  
