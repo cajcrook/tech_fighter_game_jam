@@ -31,8 +31,10 @@ class TechFighters:
                 if event.key == pygame.K_RIGHT:
                 # Move the ship to the right.
                     self.user.moving_right = True
+                    self.user.facing_right = True
                 elif event.key == pygame.K_LEFT:
                     self.user.moving_left = True
+                    self.user.facing_right = False
                     
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_RIGHT:
