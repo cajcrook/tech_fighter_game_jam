@@ -13,7 +13,10 @@ class Settings:
         self.bg_colour = (135, 206, 235)
 
         # Lives settings = bugs the player has to avoid
-        self.life_speed = 4.0
+        self.life_speed = 2.0
         self.life_width = 10
         self.life_height = 10 
         # self.life_colour = (152, 251, 152)
+
+
+        self.obstacle_load = 100
