@@ -1,4 +1,5 @@
 import pygame
+from pygame.sprite import Sprite
 from settings import Settings
 
 class User:
@@ -34,4 +35,7 @@ class User:
             self.screen.blit(self.image, self.rect)
         else:
             self.screen.blit(self.image_flipped, self.rect)
+
+    def collision(self):
+        self.rect.y += 50
         
