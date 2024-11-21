@@ -9,6 +9,8 @@ class TechFighters:
         """Initialize the game, and create game resources."""
         pygame.init()
         self.screen = pygame.display.set_mode((520, 900))
+        self.clock = pygame.time.Clock()
+        self.bg_colour = (135, 206, 235)
         pygame.display.set_caption("Tech Fighters")
 
     def run_game(self):
@@ -19,7 +21,9 @@ class TechFighters:
                 if event.type == pygame.QUIT:
                     sys.exit()
         # Make the most recently drawn screen visible.
+            self.screen.fill(self.bg_colour)
             pygame.display.flip()
+            self.clock.tick(60)
 
 
 if __name__ == '__main__':
