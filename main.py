@@ -2,6 +2,7 @@ import sys
 import pygame
 from settings import Settings
 from user import User
+from obstacle import Obstacle
 
 class TechFighters:
     """Overall class to manage game assets and behavior."""
@@ -13,12 +14,17 @@ class TechFighters:
         self.settings = Settings()
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         self.user = User(self)
+
+        self.obstacles = pygame.sprite.Group()
+
+
         pygame.display.set_caption("Tech Fighters")
 
     def run_game(self):
         """Start the main loop for the game."""
         while True:
             self._check_events()
+            self.obstacles.update()
             self._update_screen()
             self.user.update()
             self.clock.tick(60)
@@ -51,3 +57,7 @@ if __name__ == '__main__':
     # Make a game instance, and run the game.
     game = TechFighters()
     game.run_game()
+
+
+
+
