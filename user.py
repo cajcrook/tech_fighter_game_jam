@@ -12,7 +12,7 @@ class User:
         
         self.rect = self.image.get_rect()  
         self.rect.midtop = self.screen_rect.midtop
-        self.rect.y = 780
+        self.rect.y = 1
         self.x = float(self.rect.x)
         self.y = float(self.rect.y)
         self.moving_right = False

@@ -1,4 +1,5 @@
 import pygame
+from random import randint
 from pygame.sprite import Sprite
 
 class Obstacle(Sprite):
@@ -12,7 +13,7 @@ class Obstacle(Sprite):
         self.screen_rect = game.screen.get_rect()
 
         self.rect = pygame.Rect(0, 0, self.settings.obstacle_width, self.settings.obstacle_height)
-        self.rect.midbottom = self.screen_rect.midbottom
+        self.rect.midtop = (randint(0,560), 900)
         self.y = float(self.rect.y)
 
     def update(self): 
@@ -23,6 +24,6 @@ class Obstacle(Sprite):
         pygame.draw.rect(self.screen, self.colour, self.rect)
 
 
-        
+
         
 

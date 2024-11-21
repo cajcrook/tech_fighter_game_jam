@@ -1,5 +1,6 @@
 import sys
 import pygame
+import random
 from settings import Settings
 from user import User
 from obstacle import Obstacle
@@ -28,6 +29,9 @@ class TechFighters:
             self._update_screen()
             self.user.update()
             self.clock.tick(60)
+            self._load_obstacle()
+            self._delete_obstacle()
+            
     
     def _check_events(self):
         for event in pygame.event.get():
@@ -47,11 +51,24 @@ class TechFighters:
                     self.user.moving_right = False
                 if event.key == pygame.K_LEFT:
                     self.user.moving_left = False
+
                 
     def _update_screen(self):
         self.screen.fill(self.settings.bg_colour)
+        for obstacle in self.obstacles.sprites():
+            obstacle.draw_obstacle()
         self.user.blitme()
         pygame.display.flip()
+
+    def _load_obstacle(self):
+        if random.randint(0,50) == 3:
+            new_obstacle = Obstacle(self)
+            self.obstacles.add(new_obstacle)
+
+    def _delete_obstacle(self):
+        for obstacle in self.obstacles.copy():
+            if obstacle.rect.bottom <= 0:
+                self.obstacles.remove(obstacle)
     
 if __name__ == '__main__':
     # Make a game instance, and run the game.
