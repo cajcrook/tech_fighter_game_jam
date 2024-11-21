@@ -9,10 +9,11 @@ class Obstacle(Sprite):
         super().__init__()
         self.screen = game.screen
         self.settings = game.settings
-        self.colour = self.settings.obstacle_colour
+        # self.colour = self.settings.obstacle_colour
         self.screen_rect = game.screen.get_rect()
+        self.image = pygame.image.load('assets/java.png')
 
-        self.rect = pygame.Rect(0, 0, self.settings.obstacle_width, self.settings.obstacle_height)
+        self.rect = self.image.get_rect()  
         self.rect.midtop = (randint(0,560), 900)
         self.y = float(self.rect.y)
 
@@ -21,7 +22,7 @@ class Obstacle(Sprite):
         self.rect.y = self.y
 
     def draw_obstacle(self):
-        pygame.draw.rect(self.screen, self.colour, self.rect)
+        self.screen.blit(self.image, self.rect)
 
 
 

@@ -94,7 +94,7 @@ class TechFighters:
         pygame.display.flip()
     
     def _load_obstacle(self):
-        if random.randint(0, 50) == 3:
+        if random.randint(0, 30) == 3:
             new_obstacle = Obstacle(self)
             self.obstacles.add(new_obstacle)
 
