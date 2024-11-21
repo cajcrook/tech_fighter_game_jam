@@ -2,6 +2,7 @@ import sys
 import pygame
 import random
 import time
+import math
 from settings import Settings
 from user import User
 from obstacle import Obstacle
@@ -33,26 +34,30 @@ class TechFighters:
         """Start the main loop for the game."""
         while True:
             self._check_events()
-            self.obstacles.update()
-            self.lives.update()
 
             if self.game_active:
                 self.obstacles.update()
+                self.lives.update()
                 self.user.update()
                 self._load_obstacle()
                 self._delete_obstacle()
                 self._load_life()
                 self._delete_life()
-                self._collision()
+                self._collision() 
                 self._score()
+                self.settings.obstacle_speed =  1 + self.distance / 1000
+                self.settings.life_speed = 1+  self.distance / 1000 
+                if self.settings.obstacle_load > 10:
+                    self.settings.obstacle_load = 100 -  10 * math.ceil(self.distance / 1000) 
+                print(self.settings.obstacle_load)
+             
+
                 self.end_game()
 
             self._update_screen()
             self.clock.tick(60)
-            if pygame.sprite.spritecollide(self.user, self.obstacles, True):
-                self.user.collision(50)
-            if pygame.sprite.spritecollide(self.user, self.lives, True):
-                self.user.collision(-50)
+
+
 
     
     def _check_events(self):
@@ -94,7 +99,7 @@ class TechFighters:
         pygame.display.flip()
     
     def _load_obstacle(self):
-        if random.randint(0, 30) == 3:
+        if random.randint(0, self.settings.obstacle_load) == 3:
             new_obstacle = Obstacle(self)
             self.obstacles.add(new_obstacle)
 
@@ -116,8 +121,11 @@ class TechFighters:
     
     def _collision(self):
         if pygame.sprite.spritecollide(self.user, self.obstacles, True):
-                self.user.collision(50)
+            self.user.collision(50)
+        if pygame.sprite.spritecollide(self.user, self.lives, True):
+            self.user.collision(-50)
     
+   #score 
     def _score(self):
         self.distance += self.settings.speed
         font = pygame.font.Font(None, 36)  # Use default font, size 36
@@ -136,6 +144,8 @@ class TechFighters:
             self.screen.blit(score_text, score_rect)  # Draw text at the center of the screen
             pygame.display.flip()
             pygame.time.delay(3000)  # Pause for 3 seconds before exiting
+            self.settings.obstacle_speed = 1.0
+            self.settings.life_speed = 1.0
 
             self.game_active = False
     
