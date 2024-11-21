@@ -136,7 +136,10 @@ class TechFighters:
             self.screen.blit(score_text, score_rect)  # Draw text at the center of the screen
             pygame.display.flip()
             pygame.time.delay(3000)  # Pause for 3 seconds before exiting
-
+            self.distance = 0
+            self.user.rect.y = 1
+            self.user.moving_left = False
+            self.user.moving_right = False
             self.game_active = False
     
 if __name__ == '__main__':
