@@ -36,6 +36,7 @@ class TechFighters:
                 
             self._update_screen()
             self.clock.tick(60)
+
     
     def _check_events(self):
         for event in pygame.event.get():
@@ -78,7 +79,21 @@ class TechFighters:
         for obstacle in self.obstacles.copy():
             if obstacle.rect.bottom <= 0:
                 self.obstacles.remove(obstacle)
-
+    
+    def _collision(self):
+        if pygame.sprite.spritecollide(self.user, self.obstacles, True):
+                self.user.collision()
+    
+    def end_game(self):
+        if self.user.rect.y >= 800:
+            font = pygame.font.Font(None, 74)  # Create a font object (None uses default font)
+            game_over_text = font.render("Game Over", True, (255, 0, 0))  # Render the text in red
+            text_rect = game_over_text.get_rect(center=(self.settings.screen_width // 2, self.settings.screen_height // 2))
+            self.screen.blit(game_over_text, text_rect)  # Draw text at the center of the screen
+            pygame.display.flip()
+            pygame.time.delay(2000)  # Pause for 2 seconds before exiting
+            sys.exit()
+    
 if __name__ == '__main__':
     # Make a game instance, and run the game.
     game = TechFighters()
