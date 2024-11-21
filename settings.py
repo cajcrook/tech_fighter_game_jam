@@ -11,3 +11,6 @@ class Settings:
         self.obstacle_height = 10 
         self.obstacle_colour = (60, 60, 60)
         
+        self.user_speed = 10
+        self.bg_colour = (135, 206, 235)
+
