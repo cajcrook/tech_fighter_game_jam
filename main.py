@@ -1,9 +1,11 @@
 import sys
 import pygame
+import pygame.display
 import random
 from settings import Settings
 from user import User
 from obstacle import Obstacle
+from button import Button
 
 class TechFighters:
     """Overall class to manage game assets and behavior."""
@@ -15,15 +17,13 @@ class TechFighters:
         self.settings = Settings()
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         self.user = User(self)
-
         self.obstacles = pygame.sprite.Group()
-
-
         pygame.display.set_caption("Tech Fighters")
 
     def run_game(self):
         """Start the main loop for the game."""
         while True:
+            self.button.draw()
             self._check_events()
             self.obstacles.update()
             self._update_screen()
@@ -31,11 +31,7 @@ class TechFighters:
             self.clock.tick(60)
             self._load_obstacle()
             self._delete_obstacle()
-            if pygame.sprite.spritecollide(self.user, self.obstacles, True):
-                self.user.collision()
-
-
-
+            
     
     def _check_events(self):
         for event in pygame.event.get():
