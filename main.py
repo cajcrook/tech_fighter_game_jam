@@ -40,6 +40,8 @@ class TechFighters:
                 self._delete_obstacle()
                 self._load_life()
                 self._delete_life()
+                self._collision()
+                self.end_game()
 
             self._update_screen()
             self.clock.tick(60)
@@ -107,7 +109,7 @@ class TechFighters:
     
     def _collision(self):
         if pygame.sprite.spritecollide(self.user, self.obstacles, True):
-                self.user.collision()
+                self.user.collision(50)
     
     def end_game(self):
         if self.user.rect.y >= 800:
@@ -117,7 +119,7 @@ class TechFighters:
             self.screen.blit(game_over_text, text_rect)  # Draw text at the center of the screen
             pygame.display.flip()
             pygame.time.delay(2000)  # Pause for 2 seconds before exiting
-            sys.exit()
+            self.game_active = False
     
 if __name__ == '__main__':
     # Make a game instance, and run the game.
