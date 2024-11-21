@@ -1,6 +1,7 @@
 import sys
 import pygame
 import random
+import time
 from settings import Settings
 from user import User
 from obstacle import Obstacle
@@ -18,10 +19,12 @@ class TechFighters:
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         self.user = User(self)
         self.obstacles = pygame.sprite.Group()
+
+        self.distance = 0
+
         self.lives = pygame.sprite.Group()
 
         pygame.display.set_caption("Tech Fighters")
-        
         # Game states
         self.game_active = False  # Track whether the game is running
         self.button = Button(self, "Start")  # Create a start button
@@ -41,6 +44,7 @@ class TechFighters:
                 self._load_life()
                 self._delete_life()
                 self._collision()
+                self._score()
                 self.end_game()
 
             self._update_screen()
@@ -71,6 +75,7 @@ class TechFighters:
                 mouse_pos = pygame.mouse.get_pos()
                 if self.button.rect.collidepoint(mouse_pos) and not self.game_active:
                     # Start the game
+                    self.time_started = time.time
                     self.game_active = True
 
     def _update_screen(self):
@@ -82,10 +87,12 @@ class TechFighters:
             for life in self.lives.sprites():
                 life.draw_life()
             self.user.blitme()
+            self._score()
+            
         else:
             self.button.draw()  # Draw the start button when the game is inactive
         pygame.display.flip()
-
+    
     def _load_obstacle(self):
         if random.randint(0, 50) == 3:
             new_obstacle = Obstacle(self)
@@ -111,14 +118,25 @@ class TechFighters:
         if pygame.sprite.spritecollide(self.user, self.obstacles, True):
                 self.user.collision(50)
     
+    def _score(self):
+        self.distance += self.settings.speed
+        font = pygame.font.Font(None, 36)  # Use default font, size 36
+        distance_text = font.render(f"Distance: {self.distance}", True, (255, 255, 255))  # White color
+        self.screen.blit(distance_text, (10, 10))  # Top-left corner
+        
     def end_game(self):
         if self.user.rect.y >= 800:
+            print("THIS SHOULD BE GAME OVER")
             font = pygame.font.Font(None, 74)  # Create a font object (None uses default font)
-            game_over_text = font.render("Game Over", True, (255, 0, 0))  # Render the text in red
-            text_rect = game_over_text.get_rect(center=(self.settings.screen_width // 2, self.settings.screen_height // 2))
-            self.screen.blit(game_over_text, text_rect)  # Draw text at the center of the screen
+            game_over_text = font.render(f"Game Over", True, (255, 0, 0))  # Render the text in red
+            score_text = font.render(f"Score: {self.distance}", True, (255, 0, 0))
+            game_over_rect = game_over_text.get_rect(center=(self.settings.screen_width // 2, self.settings.screen_height // 2))
+            score_rect = score_text.get_rect(center=(self.settings.screen_width // 2, self.settings.screen_height // 1.7))
+            self.screen.blit(game_over_text, game_over_rect)  # Draw text at the center of the screen
+            self.screen.blit(score_text, score_rect)  # Draw text at the center of the screen
             pygame.display.flip()
-            pygame.time.delay(2000)  # Pause for 2 seconds before exiting
+            pygame.time.delay(3000)  # Pause for 3 seconds before exiting
+
             self.game_active = False
     
 if __name__ == '__main__':
