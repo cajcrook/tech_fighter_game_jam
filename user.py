@@ -12,7 +12,9 @@ class User:
         
         self.rect = self.image.get_rect()  
         self.rect.midtop = self.screen_rect.midtop
+        self.rect.y = 780
         self.x = float(self.rect.x)
+        self.y = float(self.rect.y)
         self.moving_right = False
         self.moving_left = False
         
@@ -20,11 +22,11 @@ class User:
         
     def update(self):
         if self.moving_right and self.rect.right < self.screen_rect.right:
-            self.rect.x += self.settings.user_speed
+            self.rect.x += self.settings.user_speed + (self.y/40)
             self.x += self.settings.user_speed
             
         if self.moving_left and self.rect.left > self.screen_rect.left:
-            self.rect.x -= self.settings.user_speed
+            self.rect.x -= self.settings.user_speed + (self.y/40)
             self.x -= self.settings.user_speed
 
     def blitme(self):

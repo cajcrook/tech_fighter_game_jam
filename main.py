@@ -47,8 +47,6 @@ class TechFighters:
         self.user.blitme()
         pygame.display.flip()
     
-        
-
 if __name__ == '__main__':
     # Make a game instance, and run the game.
     game = TechFighters()
