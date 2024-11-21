@@ -36,6 +36,10 @@ class User:
         else:
             self.screen.blit(self.image_flipped, self.rect)
 
-    def collision(self):
-        self.rect.y += 50
+    def collision(self, distance):
+        print(self.rect.y)
+        if distance > 0:
+            self.rect.y += distance
+        if self.rect.y > 1:
+            self.rect.y += distance
         
