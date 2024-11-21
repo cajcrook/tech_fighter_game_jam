@@ -1,6 +1,5 @@
 import sys
 import pygame
-import pygame.display
 import random
 from settings import Settings
 from user import User
@@ -19,49 +18,59 @@ class TechFighters:
         self.user = User(self)
         self.obstacles = pygame.sprite.Group()
         pygame.display.set_caption("Tech Fighters")
+        
+        # Game states
+        self.game_active = False  # Track whether the game is running
+        self.button = Button(self, "Start")  # Create a start button
 
     def run_game(self):
         """Start the main loop for the game."""
         while True:
-            self.button.draw()
             self._check_events()
-            self.obstacles.update()
-            self._update_screen()
-            self.user.update()
-            self.clock.tick(60)
-            self._load_obstacle()
-            self._delete_obstacle()
             
+            if self.game_active:
+                self.obstacles.update()
+                self.user.update()
+                self._load_obstacle()
+                self._delete_obstacle()
+                
+            self._update_screen()
+            self.clock.tick(60)
     
     def _check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-            elif event.type == pygame.KEYDOWN:
+            elif event.type == pygame.KEYDOWN and self.game_active:
                 if event.key == pygame.K_RIGHT:
-                # Move the ship to the right.
                     self.user.moving_right = True
                     self.user.facing_right = True
                 elif event.key == pygame.K_LEFT:
                     self.user.moving_left = True
                     self.user.facing_right = False
-                    
-            elif event.type == pygame.KEYUP:
+            elif event.type == pygame.KEYUP and self.game_active:
                 if event.key == pygame.K_RIGHT:
                     self.user.moving_right = False
-                if event.key == pygame.K_LEFT:
+                elif event.key == pygame.K_LEFT:
                     self.user.moving_left = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                if self.button.rect.collidepoint(mouse_pos) and not self.game_active:
+                    # Start the game
+                    self.game_active = True
 
-                
     def _update_screen(self):
         self.screen.fill(self.settings.bg_colour)
-        for obstacle in self.obstacles.sprites():
-            obstacle.draw_obstacle()
-        self.user.blitme()
+        if self.game_active:
+            for obstacle in self.obstacles.sprites():
+                obstacle.draw_obstacle()
+            self.user.blitme()
+        else:
+            self.button.draw()  # Draw the start button when the game is inactive
         pygame.display.flip()
 
     def _load_obstacle(self):
-        if random.randint(0,50) == 3:
+        if random.randint(0, 50) == 3:
             new_obstacle = Obstacle(self)
             self.obstacles.add(new_obstacle)
 
@@ -69,12 +78,8 @@ class TechFighters:
         for obstacle in self.obstacles.copy():
             if obstacle.rect.bottom <= 0:
                 self.obstacles.remove(obstacle)
-    
+
 if __name__ == '__main__':
     # Make a game instance, and run the game.
     game = TechFighters()
     game.run_game()
-
-
-
-

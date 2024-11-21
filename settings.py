@@ -5,7 +5,6 @@ class Settings:
         
         self.bg_colour = (135, 206, 235)
 
-
         # Obstacle settings = bugs ythe player has to avoid
         self.obstacle_speed = 2.0
         self.obstacle_width = 10
