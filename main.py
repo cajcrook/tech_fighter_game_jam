@@ -31,7 +31,11 @@ class TechFighters:
             self.clock.tick(60)
             self._load_obstacle()
             self._delete_obstacle()
-            
+            if pygame.sprite.spritecollide(self.user, self.obstacles, True):
+                self.user.collision()
+
+
+
     
     def _check_events(self):
         for event in pygame.event.get():
