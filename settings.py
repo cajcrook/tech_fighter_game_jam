@@ -3,7 +3,6 @@ class Settings:
         self.screen_width = 560
         self.screen_height = 900
 
-
         # Obstacle settings = bugs ythe player has to avoid
         self.obstacle_speed = 2.0
         self.obstacle_width = 10
