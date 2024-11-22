@@ -45,13 +45,6 @@ class TechFighters:
                 self._delete_life()
                 self._collision() 
                 self._score()
-                self.settings.obstacle_speed =  1 + self.distance / 1000
-                self.settings.life_speed = 1+  self.distance / 1000 
-                if self.settings.obstacle_load > 10:
-                    self.settings.obstacle_load = 100 -  10 * math.ceil(self.distance / 1000) 
-                print(self.settings.obstacle_load)
-             
-
                 self.end_game()
 
             self._update_screen()
@@ -102,6 +95,11 @@ class TechFighters:
         if random.randint(0, self.settings.obstacle_load) == 3:
             new_obstacle = Obstacle(self)
             self.obstacles.add(new_obstacle)
+        self.settings.obstacle_speed
+        self.settings.obstacle_speed =  1 + self.distance / 1000
+        self.settings.life_speed = 1+  self.distance / 1000 
+        if self.settings.obstacle_load > 10:
+            self.settings.obstacle_load = 100 -  10 * math.ceil(self.distance / 1000) 
 
     def _delete_obstacle(self):
         for obstacle in self.obstacles.copy():
@@ -149,8 +147,7 @@ class TechFighters:
             self.user.rect.y = 1
             self.user.moving_left = False
             self.user.moving_right = False
-            self.settings.obstacle_speed = 1.0
-            self.settings.life_speed = 1.0
+            self.settings.reset_game()
             self.game_active = False
     
 if __name__ == '__main__':
