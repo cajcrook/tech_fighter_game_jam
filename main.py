@@ -85,6 +85,7 @@ class TechFighters:
             for life in self.lives.sprites():
                 life.draw_life()
             self.user.blitme()
+            # self.user.draw_hitbox() #enable to debug john collision box
             self._score()
             
         else:
@@ -118,12 +119,22 @@ class TechFighters:
                 self.lives.remove(life)
     
     def _collision(self):
-        if pygame.sprite.spritecollide(self.user, self.obstacles, True):
+    # Custom collision function for circular hitbox
+        def circle_collision(user, sprite):
+        # Calculate the distance between the circle center and the sprite's rect center
+            distance = ((user.circle_center[0] - sprite.rect.centerx) ** 2 +
+                        (user.circle_center[1] - sprite.rect.centery) ** 2) ** 0.5
+            return distance < user.circle_radius + max(sprite.rect.width, sprite.rect.height) / 2
+
+    # Check collision with obstacles
+        if pygame.sprite.spritecollide(self.user, self.obstacles, True, collided=circle_collision):
             self.user.collision(50)
-        if pygame.sprite.spritecollide(self.user, self.lives, True):
+
+    # Check collision with lives
+        if pygame.sprite.spritecollide(self.user, self.lives, True, collided=circle_collision):
             self.user.collision(-50)
     
-   #score 
+
     def _score(self):
         self.distance += self.settings.speed
         font = pygame.font.Font(None, 36)  # Use default font, size 36
