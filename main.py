@@ -24,6 +24,7 @@ class TechFighters:
         self.distance = 0
 
         self.lives = pygame.sprite.Group()
+        self.background = pygame.transform.scale(pygame.image.load('assets/underwater.png'), (self.settings.screen_width, self.settings.screen_height))
 
         pygame.display.set_caption("Tech Fighters")
         # Game states
@@ -78,6 +79,7 @@ class TechFighters:
 
     def _update_screen(self):
         self.screen.fill(self.settings.bg_colour)
+        self.screen.blit(self.background, game.screen.get_rect())
 
         if self.game_active:
             for obstacle in self.obstacles.sprites():

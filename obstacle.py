@@ -11,7 +11,7 @@ class Obstacle(Sprite):
         self.settings = game.settings
         # self.colour = self.settings.obstacle_colour
         self.screen_rect = game.screen.get_rect()
-        self.image = pygame.image.load('assets/java.png')
+        self.image = pygame.transform.scale(pygame.image.load('assets/fish1.png'), (50, 50))
 
         self.rect = self.image.get_rect()  
         self.rect.midtop = (randint(0,560), 900)

@@ -11,7 +11,7 @@ class Life(Sprite):
         self.settings = game.settings
         # self.colour = self.settings.life_colour
         self.screen_rect = game.screen.get_rect()
-        self.image = pygame.image.load('assets/rust.png')
+        self.image = pygame.transform.scale(pygame.image.load('assets/plastic.png'), (50, 50))
 
         self.rect = self.image.get_rect()  
         self.rect.midtop = (randint(0,560), 900)
